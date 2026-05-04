@@ -21,6 +21,7 @@ public:
 Automaton(int size);
 void update();
 void toggleCell(int x,int y);
+void recalculateInitialState();
 const std::vector<std::vector<Cell>>& getGrid()const;
 const std::set<Edge>& getEdges()const;
 private:
