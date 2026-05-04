@@ -1,6 +1,6 @@
 cmake_minimum_required(VERSION 3.15)
 project(ZeroDimAutomaton)
 set(CMAKE_CXX_STANDARD 17)
-find_package(SFML CONFIG REQUIRED COMPONENTS graphics window system)
+find_package(SFML CONFIG REQUIRED COMPONENTS Graphics Window System)
 add_executable(Automaton main.cpp Automaton.cpp)
-target_link_libraries(Automaton PRIVATE sfml-graphics sfml-window sfml-system)
+target_link_libraries(Automaton PRIVATE SFML::Graphics SFML::Window SFML::System)
