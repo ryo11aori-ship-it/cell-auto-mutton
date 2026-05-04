@@ -1,11 +1,15 @@
 name: Windows Build
-on: [push, pull_request]
+on: [push]
 jobs:
   build:
     runs-on: windows-latest
     steps:
       - uses: actions/checkout@v4
+      - name: Setup vcpkg
+        run: |
+          git clone https://github.com/microsoft/vcpkg.git
+          ./vcpkg/bootstrap-vcpkg.bat
       - name: Configure CMake
-        run: cmake -B build
+        run: cmake -B build -DCMAKE_TOOLCHAIN_FILE=vcpkg/scripts/buildsystems/vcpkg.cmake
       - name: Build
         run: cmake --build build --config Release
