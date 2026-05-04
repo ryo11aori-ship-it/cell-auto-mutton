@@ -40,6 +40,7 @@ int gx=(int)round(wPos.x/cs);
 int gy=(int)round(wPos.y/cs);
 if(gx>=0&&gx<S&&gy>=0&&gy<S){
 aut.toggleCell(gx,gy);
+aut.recalculateInitialState();
 }
 }else if(mb->button==sf::Mouse::Button::Right){
 isDragging=true;
@@ -56,6 +57,7 @@ oldMousePos=mm->position;
 }
 }else if(const auto* kp=event->getIf<sf::Event::KeyPressed>()){
 if(kp->code==sf::Keyboard::Key::Space)running=!running;
+if(kp->code==sf::Keyboard::Key::Right&&!running)aut.update();
 if(kp->code==sf::Keyboard::Key::Up)speed=max(0.01f,speed-0.01f);
 if(kp->code==sf::Keyboard::Key::Down)speed+=0.01f;
 }
