@@ -81,12 +81,50 @@ grid[y][x].c_v=clamp((int)floor(8.0f*rho),1,8);
 grid[y][x].r_v=grid[y][x].c_v-grid[y][x].d_v;
 }
 }
+vector<pair<int,int>>newBorns;
+for(int y=0;y<gridSize;y++){
+for(int x=0;x<gridSize;x++){
+if(grid[y][x].isAlive)continue;
+int sumR=0;
+for(int dy=-1;dy<=1;dy++){
+for(int dx=-1;dx<=1;dx++){
+if(dx==0&&dy==0)continue;
+int nx=x+dx,ny=y+dy;
+if(nx>=0&&nx<gridSize&&ny>=0&&ny<gridSize&&grid[ny][nx].isAlive){
+sumR+=grid[ny][nx].r_v;
+}
+}
+}
+if(sumR==3)newBorns.push_back({x,y});
+}
+}
+vector<pair<int,int>>deadCells;
 for(int y=0;y<gridSize;y++){
 for(int x=0;x<gridSize;x++){
 if(!grid[y][x].isAlive)continue;
 if(grid[y][x].d_v<=1||grid[y][x].d_v>=grid[y][x].c_v){
-grid[y][x].isAlive=false;
+deadCells.push_back({x,y});
 }
+}
+}
+for(auto p:deadCells)grid[p.second][p.first].isAlive=false;
+for(auto p:newBorns){
+grid[p.second][p.first].isAlive=true;
+grid[p.second][p.first].d_v=0;
+}
+for(int y=0;y<gridSize;y++){
+for(int x=0;x<gridSize;x++){
+if(!grid[y][x].isAlive)continue;
+int aliveNeighbors=0;
+for(int dy=-1;dy<=1;dy++){
+for(int dx=-1;dx<=1;dx++){
+if(dx==0&&dy==0)continue;
+int nx=x+dx,ny=y+dy;
+if(nx>=0&&nx<gridSize&&ny>=0&&ny<gridSize&&grid[ny][nx].isAlive)aliveNeighbors++;
+}
+}
+float rho=(float)aliveNeighbors/8.0f;
+grid[y][x].c_v=clamp((int)floor(8.0f*rho),1,8);
 }
 }
 set<Edge>nextEdges;
