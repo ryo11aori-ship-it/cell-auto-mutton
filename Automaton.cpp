@@ -10,6 +10,47 @@ if(x>=0&&x<gridSize&&y>=0&&y<gridSize){
 grid[y][x].isAlive=!grid[y][x].isAlive;
 }
 }
+void Automaton::recalculateInitialState(){
+edges.clear();
+for(int y=0;y<gridSize;y++){
+for(int x=0;x<gridSize;x++){
+grid[y][x].d_v=0;
+if(!grid[y][x].isAlive)continue;
+int aliveNeighbors=0;
+for(int dy=-1;dy<=1;dy++){
+for(int dx=-1;dx<=1;dx++){
+if(dx==0&&dy==0)continue;
+int nx=x+dx,ny=y+dy;
+if(nx>=0&&nx<gridSize&&ny>=0&&ny<gridSize&&grid[ny][nx].isAlive)aliveNeighbors++;
+}
+}
+float rho=(float)aliveNeighbors/8.0f;
+grid[y][x].c_v=clamp((int)floor(8.0f*rho),1,8);
+grid[y][x].r_v=grid[y][x].c_v;
+}
+}
+for(int y=0;y<gridSize;y++){
+for(int x=0;x<gridSize;x++){
+tryAddEdge(x,y,x+1,y);
+tryAddEdge(x,y,x,y+1);
+tryAddEdge(x,y,x-1,y);
+tryAddEdge(x,y,x,y-1);
+}
+}
+for(int y=0;y<gridSize;y++){
+for(int x=0;x<gridSize;x++){
+int dxs[]={1,-1,1,-1},dys[]={1,1,-1,-1};
+for(int i=0;i<4;i++){
+int nx=x+dxs[i],ny=y+dys[i];
+if(nx>=0&&nx<gridSize&&ny>=0&&ny<gridSize){
+if(grid[y][nx].isAlive||grid[ny][x].isAlive){
+tryAddEdge(x,y,nx,ny);
+}
+}
+}
+}
+}
+}
 void Automaton::tryAddEdge(int x1,int y1,int x2,int y2){
 if(x2<0||x2>=gridSize||y2<0||y2>=gridSize)return;
 if(!grid[y1][x1].isAlive||!grid[y2][x2].isAlive)return;
