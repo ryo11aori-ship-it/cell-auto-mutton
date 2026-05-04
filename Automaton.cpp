@@ -48,11 +48,27 @@ grid[y][x].isAlive=false;
 }
 }
 }
-edges.clear();
+set<Edge>nextEdges;
 for(int y=0;y<gridSize;y++){
 for(int x=0;x<gridSize;x++){
 grid[y][x].d_v=0;
-grid[y][x].r_v=grid[y][x].c_v;
+}
+}
+for(const auto& e:edges){
+if(grid[e.y1][e.x1].isAlive&&grid[e.y2][e.x2].isAlive){
+if(grid[e.y1][e.x1].d_v<grid[e.y1][e.x1].c_v&&grid[e.y2][e.x2].d_v<grid[e.y2][e.x2].c_v){
+nextEdges.insert(e);
+grid[e.y1][e.x1].d_v++;
+grid[e.y2][e.x2].d_v++;
+}
+}
+}
+edges=nextEdges;
+for(int y=0;y<gridSize;y++){
+for(int x=0;x<gridSize;x++){
+if(grid[y][x].isAlive){
+grid[y][x].r_v=grid[y][x].c_v-grid[y][x].d_v;
+}
 }
 }
 for(int y=0;y<gridSize;y++){
