@@ -25,7 +25,7 @@ if(nx>=0&&nx<gridSize&&ny>=0&&ny<gridSize&&grid[ny][nx].isAlive)aliveNeighbors++
 }
 }
 float rho=(float)aliveNeighbors/8.0f;
-grid[y][x].c_v=clamp((int)floor(8.0f*rho),1,8);
+grid[y][x].c_v=clamp((int)floor(8.0f*rho)+1,1,8);
 grid[y][x].r_v=grid[y][x].c_v;
 }
 }
@@ -77,7 +77,7 @@ if(nx>=0&&nx<gridSize&&ny>=0&&ny<gridSize&&grid[ny][nx].isAlive)aliveNeighbors++
 }
 }
 float rho=(float)aliveNeighbors/8.0f;
-grid[y][x].c_v=clamp((int)floor(8.0f*rho),1,8);
+grid[y][x].c_v=clamp((int)floor(8.0f*rho)+1,1,8);
 grid[y][x].r_v=grid[y][x].c_v-grid[y][x].d_v;
 }
 }
@@ -124,7 +124,7 @@ if(nx>=0&&nx<gridSize&&ny>=0&&ny<gridSize&&grid[ny][nx].isAlive)aliveNeighbors++
 }
 }
 float rho=(float)aliveNeighbors/8.0f;
-grid[y][x].c_v=clamp((int)floor(8.0f*rho),1,8);
+grid[y][x].c_v=clamp((int)floor(8.0f*rho)+1,1,8);
 }
 }
 set<Edge>nextEdges;
